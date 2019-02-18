@@ -1,6 +1,7 @@
 from flask import Flask, render_template, jsonify, request, send_file
 import xml.etree.ElementTree
-app = Flask(__name__, template_folder="templates")
+app = Flask(__name__, static_folder = "../dist/static",
+            template_folder = "../dist")
 
 co2_xml = xml.etree.ElementTree.parse('data/co2.xml').getroot()
 population_xml = xml.etree.ElementTree.parse('data/population.xml').getroot()
@@ -44,7 +45,12 @@ def index():
 def get_co2(country, year):
     data_value = co2_dict.get(country + '_' + year)
     if data_value is not None and data_value > 0:
-        return str(data_value) + 'kt'
+        response = {
+            'country': country,
+            'year': year,
+            'emissions': str(data_value)
+        }
+        return jsonify(response)
     else:
         return "-1"
 
@@ -55,3 +61,8 @@ def get_population(country, year):
         return str(data_value)
     else:
         return "-1"
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    return render_template("index.html")
