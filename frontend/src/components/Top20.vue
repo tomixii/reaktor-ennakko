@@ -1,5 +1,4 @@
 <template>
-
     <div class="container">
       <p>Select year:</p>
       <select v-model="selected" @change="getEmissions()">
@@ -11,6 +10,8 @@
       <bar-chart v-if="loaded" :chart-data="chartData" :chart-labels="chartLabels"/>
     </div>
 </template>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
 
 <script>
 import axios from 'axios'
