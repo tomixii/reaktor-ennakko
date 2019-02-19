@@ -4,8 +4,8 @@ from util import *
 from collections import OrderedDict
 import xml.etree.ElementTree
 
-app = Flask(__name__, static_folder = "../dist/static",
-            template_folder = "../dist")
+app = Flask(__name__, static_folder = "dist/static",
+            template_folder = "dist")
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 co2_xml = xml.etree.ElementTree.parse('xml_data/co2.xml').getroot()
