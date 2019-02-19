@@ -1,5 +1,7 @@
 from flask import Flask, render_template, jsonify, request, send_file
 from flask_cors import CORS
+from util import *
+from collections import OrderedDict
 import xml.etree.ElementTree
 
 app = Flask(__name__, static_folder = "../dist/static",
@@ -11,33 +13,6 @@ population_xml = xml.etree.ElementTree.parse('data/population.xml').getroot()
 
 co2_dict = {}
 population_dict = {}
-
-#-------UTIL FUNCTIONS---------
-def parse_country(country_data):
-    name = ''
-    year = ''
-    value = 0
-    for field in country_data.findall('field'):
-        if field.attrib['name'] == 'Country or Area':
-            name = field.text.lower()
-        elif field.attrib['name'] == 'Year':
-            year = field.text
-        elif field.attrib['name'] == 'Value' and field.text is not None:
-            value = field.text
-    return name, year, value
-
-def create_response(country_data, country, year):
-    if country_data is not None:
-        data_value = country_data.get(year)
-        if data_value is not None and data_value > 0:
-            response = {
-                'country': country,
-                'year': year,
-                'value': str(data_value)
-            }
-            return jsonify(response)
-    return jsonify({'value': '-1'})
-
 
 #------CREATE DICTIONARIES FROM XMLS------
 for country_data in population_xml.iter('record'):
@@ -64,6 +39,18 @@ def get_co2(country, year):
 @app.route("/api/population/<country>/<year>")
 def get_population(country, year):
     return create_response(population_dict.get(country), country, year)
+
+@app.route("/api/co2/<year>/<percapita>/<top>")
+def get_co2_top_list(year, percapita, top):
+    this_year_co2 = {}
+    for name, country_data in co2_dict.items():
+        value = float(country_data[year])
+        population = int(population_dict[name][year])
+        if int(percapita) and population > 0:
+            value = round(value * 1000 / population, 2)
+        this_year_co2[name] = value
+    top_list = sorted(this_year_co2.items(), key=lambda t: t[1], reverse=True)[:20]
+    return jsonify(top_list)
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
