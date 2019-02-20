@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-      <h2>Great powers</h2>
+      <h2>Great powers' CO<sub>2</sub> emissions</h2>
       <pie-chart v-if="loaded" :chart-data="chartData" />
       <br>
       <select v-model="selected" @change="getEmissions()">

@@ -48,7 +48,6 @@ def get_co2_top_list(year):
         population = int(population_dict[name][year])
         if population > 0:
             value = round(value * 1000 / population, 2)
-            print(name, value)
             if value > 100:
                 value = 0
             this_year_co2[name.capitalize()] = value

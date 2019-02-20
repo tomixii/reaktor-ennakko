@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-      <h2>Top 20 CO2 emissions per capita (t)</h2>
+      <h2>Top countries by CO<sub>2</sub> emissions per capita (t)</h2>
       <bar-chart v-if="loaded" :chart-data="chartData" />
       <select v-model="selected" @change="getEmissions()">
       <option disabled value="">Select year</option>
@@ -101,7 +101,6 @@ export default {
       }
       this.loaded = false
       const path = 'http://localhost:5000/api/co2percapita/'+this.selected
-      console.log(path)
       axios.get(path)
         .then(response => {
           var emissions = response.data

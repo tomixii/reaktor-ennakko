@@ -1,11 +1,10 @@
 
 <template>
   <div id="app">
-    <b-navbar toggleable="lg" type="dark" variant="info">
-      <b-navbar-brand href="#">CO2 Emissions Hub</b-navbar-brand>
+    <b-navbar fixed="top" type="dark" variant="dark">
+      <b-navbar-brand href="#">CO<sub>2</sub> Emissions Hub</b-navbar-brand>
       <b-navbar-toggle target="nav_collapse" />
 
-      <b-collapse is-nav id="nav_collapse">
         <b-navbar-nav>
           <b-nav-item
             v-for="tab in tabs"
@@ -14,9 +13,7 @@
             v-on:click="currentTab = tab"
           >{{ tab.name }}</b-nav-item>
         </b-navbar-nav>
-      </b-collapse>
     </b-navbar>
-    <br>
     <br>
     <component
       v-bind:is="currentTab.component"
