@@ -4,7 +4,7 @@
       <bar-chart v-if="loaded" :chart-data="chartData" />
       <select v-model="selected" @change="getEmissions()">
       <option disabled value="">Select year</option>
-      <option v-for="year in years" >
+      <option v-for="year in years" v-bind:key="year">
       {{ year }}
       </option>
       </select>
