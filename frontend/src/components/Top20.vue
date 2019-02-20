@@ -1,13 +1,13 @@
 <template>
     <div class="container">
-      <p>Select year:</p>
+      <h2>Top 20 CO2 emissions per capita (t)</h2>
+      <bar-chart v-if="loaded" :chart-data="chartData" />
       <select v-model="selected" @change="getEmissions()">
-        <option disabled value="">Select year</option>
-        <option v-for="year in years" >
-          {{ year }}
-        </option>
+      <option disabled value="">Select year</option>
+      <option v-for="year in years" >
+      {{ year }}
+      </option>
       </select>
-      <bar-chart v-if="loaded" :chart-data="chartData" :chart-labels="chartLabels"/>
     </div>
 </template>
 
@@ -27,11 +27,7 @@ Vue.component('bar-chart', {
   mixins: [VueChartJs.mixins.reactiveProp],
   props: {
         chartData: {
-          type: Array | Object,
-          required: false
-        },
-        chartLabels: {
-          type: Array,
+          type: Object,
           required: true
         }
   },
@@ -64,35 +60,27 @@ Vue.component('bar-chart', {
           mode: 'single',
           callbacks: {
             label: function (tooltipItems, data) {
-              return tooltipItems.xLabel
+              return tooltipItems.xLabel + ' t'
             }
           }
         },
         responsive: true,
-        maintainAspectRatio: false,
-        backgroundColor: "#123456"
+        maintainAspectRatio: false
       }
     }
   },
   mounted () {
     // this.chartData is created in the mixin
-    this.renderChart({
-          labels: this.chartLabels,
-          datasets: [
-            {
-              data: this.chartData,
-            }
-          ]
-        },this.options)
+    this.renderChart(this.chartData,this.options)
 
   }
 })
 
 export default {
+  name: "top20-chart",
   data: () => ({
     loaded: false,
-    chartLabels: [],
-    chartData: [],
+    chartData: {},
     selected: '2014',
     years: range(1960, 2014)
   }),
@@ -101,19 +89,27 @@ export default {
   },
   methods: {
     getEmissions () {
-      this.chartData = []
-      this.chartLabels = []
+      this.chartData = {
+        labels: [],
+        datasets: [
+          {
+            label: 'CO2 emissions per capita (t)',
+            backgroundColor: '#c45850',
+            data: []
+          }
+        ]
+      }
       this.loaded = false
-      const path = 'http://localhost:5000/api/co2/'+this.selected+'/1/20'
+      const path = 'http://localhost:5000/api/co2percapita/'+this.selected+'/20'
+      console.log(path)
       axios.get(path)
         .then(response => {
           var emissions = response.data
           if (emissions !== undefined) {
             for (var i = 0; i < emissions.length; i++) {
-              this.chartLabels.push(emissions[i][0])
-              this.chartData.push(emissions[i][1])
+              this.chartData.labels.push(emissions[i][0])
+              this.chartData.datasets[0].data.push(emissions[i][1])
             }
-            console.log(this.chartData)
             this.loaded = true
           }
         })

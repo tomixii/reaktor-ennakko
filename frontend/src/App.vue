@@ -1,14 +1,21 @@
 <template>
   <div id="app">
+    <h1>CO2 emissions</h1>
     <router-view/>
+
   </div>
 </template>
 
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 <script>
+import Top20 from './components/Top20.vue'
+
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+		Top20
+	}
 }
 </script>
 

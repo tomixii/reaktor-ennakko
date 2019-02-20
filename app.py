@@ -40,17 +40,35 @@ def get_co2(country, year):
 def get_population(country, year):
     return create_response(population_dict.get(country), country, year)
 
-@app.route("/api/co2/<year>/<percapita>/<top>")
-def get_co2_top_list(year, percapita, top):
+@app.route("/api/co2percapita/<year>/<top>")
+def get_co2_top_list(year, top):
     this_year_co2 = {}
     for name, country_data in co2_dict.items():
         value = float(country_data[year])
         population = int(population_dict[name][year])
-        if int(percapita) and population > 0:
+        if population > 0:
             value = round(value * 1000 / population, 2)
-        this_year_co2[name] = value
-    top_list = sorted(this_year_co2.items(), key=lambda t: t[1], reverse=True)[:20]
+            print(name, value)
+            if value > 100:
+                value = 0
+            this_year_co2[name.capitalize()] = value
+    top_list = sorted(this_year_co2.items(), key=lambda t: t[1], reverse=True)[:top]
     return jsonify(top_list)
+
+@app.route("/api/greatpowers/<year>")
+def get_co2_great_powers(year):
+    great_powers = ['united kingdom', 'china', 'france', 'germany', 'japan', 'russian federation', 'united states']
+    world_co2 = co2_dict['world'][year]
+    world_co2_percentage = 100
+    this_year_co2 = {}
+    for name in great_powers:
+        value = (float(co2_dict[name][year]) / world_co2) * 100
+        if value > 0:
+            world_co2_percentage -= value
+            this_year_co2[name.capitalize()] = round(value, 2)
+    this_year_co2["Rest of the world"] = round(world_co2_percentage, 2)
+    percentage_list = sorted(this_year_co2.items(), key=lambda t: t[1], reverse=True)
+    return jsonify(percentage_list)
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
