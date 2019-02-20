@@ -1,20 +1,3 @@
-<template>
-    <div class="container">
-      <h2>Great powers</h2>
-      <pie-chart v-if="loaded" :chart-data="chartData" />
-      <br>
-      <select v-model="selected" @change="getEmissions()">
-      <option disabled value="">Select year</option>
-      <option v-for="year in years" >
-      {{ year }}
-      </option>
-      </select>
-    </div>
-</template>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
-
-<script>
 import axios from 'axios'
 import Vue from 'vue'
 import VueChartJs from 'vue-chartjs'
@@ -23,8 +6,8 @@ function range(start, end) {
   return Array(end - start + 1).fill().map((_, idx) => start + idx)
 }
 
-Vue.component('pie-chart', {
-  extends: VueChartJs.Pie,
+Vue.component('bar-chart', {
+  extends: VueChartJs.HorizontalBar,
   mixins: [VueChartJs.mixins.reactiveProp],
   props: {
         chartData: {
@@ -35,15 +18,33 @@ Vue.component('pie-chart', {
   data: function () {
     return {
       options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            },
+            gridLines: {
+              display: false
+            }
+          }],
+          xAxes: [{
+            ticks: {
+              beginAtZero: true
+            },
+            gridLines: {
+              display: true
+            }
+          }]
+        },
         legend: {
-          display: true
+          display: false
         },
         tooltips: {
           enabled: true,
           mode: 'single',
           callbacks: {
             label: function (tooltipItems, data) {
-              return data.labels[tooltipItems.index] + ': ' + data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index] + '%'
+              return tooltipItems.xLabel + ' t'
             }
           }
         },
@@ -60,7 +61,7 @@ Vue.component('pie-chart', {
 })
 
 export default {
-  name: "great-powers-chart",
+  name: "top20-chart",
   data: () => ({
     loaded: false,
     chartData: {},
@@ -76,15 +77,15 @@ export default {
         labels: [],
         datasets: [
           {
-            label: 'Great powers\' CO2 emissions',
-            backgroundColor: ["Green", "Red", "Blue", "Yellow", "Orange", "Purple", "Cyan", "Brown"],
-            data: [],
-            hoverBackgroundColor: ["Green", "Red", "Blue", "Yellow", "Orange", "Purple", "Cyan", "Brown"]
+            label: 'CO2 emissions per capita (t)',
+            backgroundColor: '#c45850',
+            data: []
           }
         ]
       }
       this.loaded = false
-      const path = 'http://localhost:5000/api/greatpowers/'+this.selected
+      const path = 'http://localhost:5000/api/co2percapita/'+this.selected
+      console.log(path)
       axios.get(path)
         .then(response => {
           var emissions = response.data
@@ -102,5 +103,3 @@ export default {
     }
   }
 }
-
-</script>

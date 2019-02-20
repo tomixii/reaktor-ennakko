@@ -40,8 +40,8 @@ def get_co2(country, year):
 def get_population(country, year):
     return create_response(population_dict.get(country), country, year)
 
-@app.route("/api/co2percapita/<year>/<top>")
-def get_co2_top_list(year, top):
+@app.route("/api/co2percapita/<year>")
+def get_co2_top_list(year):
     this_year_co2 = {}
     for name, country_data in co2_dict.items():
         value = float(country_data[year])
@@ -52,7 +52,7 @@ def get_co2_top_list(year, top):
             if value > 100:
                 value = 0
             this_year_co2[name.capitalize()] = value
-    top_list = sorted(this_year_co2.items(), key=lambda t: t[1], reverse=True)[:top]
+    top_list = sorted(this_year_co2.items(), key=lambda t: t[1], reverse=True)[:20]
     return jsonify(top_list)
 
 @app.route("/api/greatpowers/<year>")

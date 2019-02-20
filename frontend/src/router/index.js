@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 const routerOptions = [
-  { path: '/', component: 'HelloWorld' },
+  { path: '/', component: 'Home' },
   { path: '/top20', component: 'Top20' },
   { path: '/search', component: 'CountrySearch' },
   { path: '/big', component: 'BigCountries' },

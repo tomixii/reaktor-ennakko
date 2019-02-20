@@ -100,7 +100,7 @@ export default {
         ]
       }
       this.loaded = false
-      const path = 'http://localhost:5000/api/co2percapita/'+this.selected+'/20'
+      const path = 'http://localhost:5000/api/co2percapita/'+this.selected
       console.log(path)
       axios.get(path)
         .then(response => {
