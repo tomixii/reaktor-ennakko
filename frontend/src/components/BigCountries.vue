@@ -79,7 +79,7 @@ export default {
         ]
       }
       this.loaded = false
-      axios.get(process.env.API_URL + '/api/greatpowers/' + this.selected)
+      axios.get('/api/greatpowers/' + this.selected)
         .then(response => {
           var emissions = response.data
           if (emissions !== undefined) {
