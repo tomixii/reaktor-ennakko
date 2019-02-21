@@ -2,7 +2,7 @@
 
 Tämä työkalu on toteutettu Reaktorin kesätöitä varten ennakkotehtävänä. Tällä työkalulla käyttäjä voi tutkia maailman top 20 listaa eniten saastuttavista maista(per asukas) eri vuosilta sekä katsoa mikä on ollu suurvaltojen rooli maapallon hiilidioksidipäästöissä historian aikana. Työkalulla on mahdollista tutkia tilannetta vuodesta 1960 vuoteen 2014. Data työkalua varten on saatu osoitteesta http://www.worldbank.org/. 
 
-Työkalua voi käyttää osoitteessa https://reaktor-ennakko.herokuapp.com
+Työkalu on suunniteltu käytettäväksi tietokoneella ja sitä voi käyttää osoitteessa https://reaktor-ennakko.herokuapp.com
 
 ## API
 
