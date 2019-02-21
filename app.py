@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, send_file
+from flask import Flask, render_template, jsonify, abort
 from flask_cors import CORS
 from util import *
 from collections import OrderedDict
@@ -27,18 +27,31 @@ for country_data in co2_xml.iter('record'):
         co2_dict[name] = {}
     co2_dict[name][year] = float(value)
 
-#-------SIMPLE API------
 @app.route("/")
 def index():
     return render_template("index.html")
 
+#-------SIMPLE API------
+@app.route("/api/co2/<country>")
+def get_co2(country):
+    return jsonify(co2_dict.get(country))
+
+@app.route("/api/population/<country>")
+def get_population(country):
+    return jsonify(population_dict.get(country))
+
 @app.route("/api/co2/<country>/<year>")
-def get_co2(country, year):
-    return create_response(co2_dict.get(country), country, year)
+def get_co2_with_year(country, year):
+    return str(search_dict(co2_dict, country, year))
 
 @app.route("/api/population/<country>/<year>")
-def get_population(country, year):
-    return create_response(population_dict.get(country), country, year)
+def get_population_with_year(country, year):
+    return str(search_dict(population_dict, country, year))
+
+@app.route("/api/countries")
+def get_countries():
+    return jsonify(list(population_dict.keys()))
+
 
 @app.route("/api/co2percapita/<year>")
 def get_co2_top_list(year):
@@ -74,4 +87,4 @@ def get_co2_great_powers(year):
 def catch_all(path):
     if app.debug:
         return requests.get('http://localhost:8080/{}'.format(path)).text
-    return render_template("index.html")
+    return abort(404)

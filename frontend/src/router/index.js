@@ -3,10 +3,8 @@ import Router from 'vue-router'
 
 const routerOptions = [
   { path: '/', component: 'Home' },
-  { path: '/top20', component: 'Top20' },
-  { path: '/search', component: 'CountrySearch' },
-  { path: '/big', component: 'BigCountries' },
-  { path: '*', component: 'NotFound' }
+  { path: '/404', component: 'NotFound' },
+  { path: '*', redirect: '/404' }
 ]
 const routes = routerOptions.map(route => {
   return {

@@ -4,22 +4,19 @@
       <pie-chart v-if="loaded" :chart-data="chartData" />
       <br>
       <select v-model="selected" @change="getEmissions()">
-      <option disabled value="">Select year</option>
-      <option v-for="year in years" v-bind:key="year" >
-      {{ year }}
-      </option>
+        <option v-for="year in years" v-bind:key="year" >
+          {{ year }}
+        </option>
       </select>
     </div>
 </template>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
 
 <script>
 import axios from 'axios'
 import Vue from 'vue'
 import VueChartJs from 'vue-chartjs'
 
-function range(start, end) {
+function range (start, end) {
   return Array(end - start + 1).fill().map((_, idx) => start + idx)
 }
 
@@ -27,10 +24,10 @@ Vue.component('pie-chart', {
   extends: VueChartJs.Pie,
   mixins: [VueChartJs.mixins.reactiveProp],
   props: {
-        chartData: {
-          type: Object,
-          required: true
-        }
+    chartData: {
+      type: Object,
+      required: true
+    }
   },
   data: function () {
     return {
@@ -53,14 +50,12 @@ Vue.component('pie-chart', {
     }
   },
   mounted () {
-    // this.chartData is created in the mixin
-    this.renderChart(this.chartData,this.options)
-
+    this.renderChart(this.chartData, this.options)
   }
 })
 
 export default {
-  name: "great-powers-chart",
+  name: 'great-powers-chart',
   data: () => ({
     loaded: false,
     chartData: {},
@@ -77,14 +72,14 @@ export default {
         datasets: [
           {
             label: 'Great powers\' CO2 emissions',
-            backgroundColor: ["Green", "Red", "Blue", "Yellow", "Orange", "Purple", "Cyan", "Brown"],
+            backgroundColor: ['Green', 'Red', 'Blue', 'Yellow', 'Orange', 'Purple', 'Cyan', 'Brown'],
             data: [],
-            hoverBackgroundColor: ["Green", "Red", "Blue", "Yellow", "Orange", "Purple", "Cyan", "Brown"]
+            hoverBackgroundColor: ['Green', 'Red', 'Blue', 'Yellow', 'Orange', 'Purple', 'Cyan', 'Brown']
           }
         ]
       }
       this.loaded = false
-      const path = 'http://localhost:5000/api/greatpowers/'+this.selected
+      const path = 'http://localhost:5000/api/greatpowers/' + this.selected
       axios.get(path)
         .then(response => {
           var emissions = response.data
@@ -102,5 +97,4 @@ export default {
     }
   }
 }
-
 </script>

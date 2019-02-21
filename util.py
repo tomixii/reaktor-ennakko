@@ -13,14 +13,10 @@ def parse_country(country_data):
             value = field.text
     return name, year, value
 
-def create_response(country_data, country, year):
+def search_dict(dict, country, year):
+    country_data = dict.get(country)
     if country_data is not None:
         data_value = country_data.get(year)
         if data_value is not None and data_value > 0:
-            response = {
-                'country': country,
-                'year': year,
-                'value': str(data_value)
-            }
-            return jsonify(response)
-    return jsonify({'value': '-1'})
+            return data_value
+    return -1

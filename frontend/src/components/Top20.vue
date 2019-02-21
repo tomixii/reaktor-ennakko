@@ -3,10 +3,9 @@
       <h2>Top countries by CO<sub>2</sub> emissions per capita (t)</h2>
       <bar-chart v-if="loaded" :chart-data="chartData" />
       <select v-model="selected" @change="getEmissions()">
-      <option disabled value="">Select year</option>
-      <option v-for="year in years" v-bind:key="year">
-      {{ year }}
-      </option>
+        <option v-for="year in years" v-bind:key="year">
+          {{ year }}
+        </option>
       </select>
     </div>
 </template>
@@ -18,7 +17,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import VueChartJs from 'vue-chartjs'
 
-function range(start, end) {
+function range (start, end) {
   return Array(end - start + 1).fill().map((_, idx) => start + idx)
 }
 
@@ -26,10 +25,10 @@ Vue.component('bar-chart', {
   extends: VueChartJs.HorizontalBar,
   mixins: [VueChartJs.mixins.reactiveProp],
   props: {
-        chartData: {
-          type: Object,
-          required: true
-        }
+    chartData: {
+      type: Object,
+      required: true
+    }
   },
   data: function () {
     return {
@@ -70,14 +69,12 @@ Vue.component('bar-chart', {
     }
   },
   mounted () {
-    // this.chartData is created in the mixin
-    this.renderChart(this.chartData,this.options)
-
+    this.renderChart(this.chartData, this.options)
   }
 })
 
 export default {
-  name: "top20-chart",
+  name: 'top20-chart',
   data: () => ({
     loaded: false,
     chartData: {},
@@ -118,5 +115,4 @@ export default {
     }
   }
 }
-
 </script>
