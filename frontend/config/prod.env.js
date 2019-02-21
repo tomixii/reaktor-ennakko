@@ -1,5 +1,5 @@
 'use strict'
 module.exports = {
   NODE_ENV: '"production"',
-  API_URL: '"reaktor-ennakko.herokuapp.com"',
+  API_URL: '""',
 }
