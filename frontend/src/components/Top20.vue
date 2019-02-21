@@ -97,7 +97,7 @@ export default {
         ]
       }
       this.loaded = false
-      axios.get('/api/co2percapita/'+this.selected)
+      axios.get(process.env.API_URL + '/api/co2percapita/' + this.selected)
         .then(response => {
           var emissions = response.data
           if (emissions !== undefined) {
