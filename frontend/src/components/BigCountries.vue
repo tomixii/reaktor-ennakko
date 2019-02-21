@@ -79,8 +79,7 @@ export default {
         ]
       }
       this.loaded = false
-      const path = 'http://localhost:5000/api/greatpowers/' + this.selected
-      axios.get(path)
+      axios.get(/api/greatpowers/' + this.selected)
         .then(response => {
           var emissions = response.data
           if (emissions !== undefined) {

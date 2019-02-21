@@ -97,8 +97,7 @@ export default {
         ]
       }
       this.loaded = false
-      const path = 'http://localhost:5000/api/co2percapita/'+this.selected
-      axios.get(path)
+      axios.get('/api/co2percapita/'+this.selected)
         .then(response => {
           var emissions = response.data
           if (emissions !== undefined) {
