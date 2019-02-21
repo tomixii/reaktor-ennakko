@@ -97,7 +97,6 @@ export default {
         ]
       }
       this.loaded = false
-      console.log(process.env.API_URL)
       axios.get(process.env.API_URL + '/api/co2percapita/' + this.selected)
         .then(response => {
           var emissions = response.data
